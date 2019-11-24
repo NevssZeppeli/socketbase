@@ -3,36 +3,36 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#define PORT 7777
 
+void CloseSocket(int sockfd)
+{
+	shutdown(sockfd, 2);
+	close(sockfd);
+}
 
 int main() 
 {
-    int Socket;
 	sockaddr_in addr;
-    int sizeofaddr = sizeof(addr);
-    addr.sin_family = AF_INET; //тип сети
-    addr.sin_port = htons (7777); //порт
-    addr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	addr.sin_port = htons (PORT); //порт
+	addr.sin_family = AF_INET; //тип сети
 
-    Socket = socket(AF_INET, SOCK_STREAM, 0);
-    if(Socket < 0)
-    {
-        perror("socket");
-        exit(1);
-    }
+	int Socket = socket(AF_INET, SOCK_STREAM, IPROTO_TCP);
+	if(Socket < 0)
+	{
+		perror("socket");
+		exit(1);
+	}
 
-    if(connect(Socket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-    {
-        perror("connect");
-        exit(2);
-    }
-    else
-    {
-        std::cout << "Connected to server!\n";
-    }
-
-    shutdown (Socket, 2);
-    close(Socket);
-
-    return 0;
+	if(connect(Socket, (sockaddr*)&addr, sizeof(addr)) < 0)
+	{
+		perror("connect");
+		exit(2);
+	}
+	else
+	{
+		std::cout << "Connected to server!\n";
+	}
+	CloseSocket(Socket);
 }
