@@ -3,7 +3,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#define PORT 7777
+#define PORT 5454
 
 void CloseSocket(int sockfd)
 {
@@ -34,5 +34,8 @@ int main()
 	{
 		std::cout << "Connected to server!\n";
 	}
+    char msg [256];
+    recv (Socket, msg, sizeof(msg), 0);
+    std::cout << msg << std::endl;
 	CloseSocket(Socket);
 }
