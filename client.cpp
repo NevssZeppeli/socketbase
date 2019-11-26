@@ -18,7 +18,7 @@ int main()
 	addr.sin_port = htons (PORT); //порт
 	addr.sin_family = AF_INET; //тип сети
 
-	int Socket = socket(AF_INET, SOCK_STREAM, IPROTO_TCP);
+	int Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if(Socket < 0)
 	{
 		perror("socket");
