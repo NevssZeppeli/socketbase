@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <thread>
-#include <string>
-#define PORT 0000
+#include <cstring>
+#define PORT 1111
 
 
 int Socket;
@@ -26,7 +26,7 @@ void ClientHandler (int socketid, int closesocketid)
 	std::string message = std::string(msg);
 	if (message == "Messaging stopped")
 	{
-		std::cout << "\n--Stop--\n";
+		std::cout << "\n-- stop --\n";
 		break;
 		CloseSocket (closesocketid);
 	}
@@ -43,11 +43,10 @@ void sender (int socketid, int closesocketid)
     std::string exit = "Messaging stopped";
     if (msg == "/exit")
     {
-		std::cout << "\n--Stop--\n";
+		std::cout << "\n-- stop --\n";
         send (socketid, exit.c_str(), sizeof(exit), 0);
 		break;
 		CloseSocket (closesocketid);
-
     }
     send (socketid, msg.c_str(), sizeof(msg), 0);
     }
@@ -81,7 +80,6 @@ int main()
 	std::thread senderofmsg (sender, Socket, Socket);
 	senderofmsg.join();
 	
-
-
+	CloseSocket (Socket);
 	return 0;
 }
